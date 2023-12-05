@@ -1,3 +1,8 @@
-.starter {
-  font-size: 18px;
+@import "./styles/style_utils";
+
+.page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
