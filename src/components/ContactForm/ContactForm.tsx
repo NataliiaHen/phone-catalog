@@ -8,7 +8,7 @@ import { ModalContext } from '../../storage/ModalContext';
 
 const regexName = /^[a-zA-Z]{3,20}$/;
 const regexSurname = /^\w{3,20}$/;
-const regexPhone = /^(\+?38)?\s?0\d{9}$/;
+const regexPhone = /^(\+?38\s?)?(\(\d{3}\)|\d{3})[\s.-]?\d{3}[\s.-]?\d{2}[\s.-]?\d{2}$/;
 const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const ContactForm: React.FC = memo(() => {
@@ -154,7 +154,7 @@ export const ContactForm: React.FC = memo(() => {
                 className="contact-form__input"
                 id="phone"
                 type="tel"
-                placeholder="Phone number"
+                placeholder="+380xxxxxxxxx"
                 name="phone"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
@@ -162,7 +162,7 @@ export const ContactForm: React.FC = memo(() => {
             </div>
             {hasPhoneError && (
               <p className="contact-form__error">
-                This phone is invalid
+                This phone is invalid. Please write phone in format +380xxxxxxxxx
               </p>
             )}
           </div>
