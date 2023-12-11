@@ -4,7 +4,10 @@
   position: relative;
   height: 100%;
   width: 100%;
-  max-width: 327px;
+
+  @include onTablet {
+    max-width: 327px;
+  }
 
   &__input {
     width: 100%;

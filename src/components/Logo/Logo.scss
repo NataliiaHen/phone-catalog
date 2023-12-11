@@ -1,13 +1,15 @@
 @import "../../styles/style_utils";
 
 .logo {
+  @include scale;
   justify-self: start;
-  flex-grow: 1;
   flex-shrink: 0;
   display: block;
   height: 24px;
-  padding-inline: 20px;
+  padding-inline: 20px 10px;
   transform: scale(1);
 
-  @include scale;
+  @include onTablet {
+    padding-inline: 20px;
+  }
 }

@@ -1,13 +1,18 @@
+import './Search.scss';
 import { debounce } from 'lodash';
 import React, {
   useRef, useState, memo,
 } from 'react';
-import './Search.scss';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { ReactSVG } from 'react-svg';
 import { SearchParams, getSearchWith } from '../../helpers/searchHelpers';
 
-export const Search: React.FC = memo(() => {
+type Props = {
+  closeSearch: () => void;
+  isSearchOpen: boolean;
+};
+
+export const Search: React.FC<Props> = memo(({ closeSearch, isSearchOpen }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchQuery = searchParams.get('query') || '';
 
@@ -49,6 +54,7 @@ export const Search: React.FC = memo(() => {
 
     setQuery('');
     applyQuery('');
+    closeSearch();
   };
 
   return (
@@ -65,7 +71,7 @@ export const Search: React.FC = memo(() => {
       {appliedQuery && null}
 
       <div className="search__icon-container">
-        {query ? (
+        {(query || isSearchOpen) ? (
           <button
             className="search__icon-box"
             data-cy="searchDelete"

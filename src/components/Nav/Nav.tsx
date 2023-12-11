@@ -34,7 +34,17 @@ export const Nav: React.FC = memo(() => {
   } = useContext(PageSizeContext);
   const { pathname } = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const closeMenu = useCallback(() => setIsMenuOpen(false), []);
+
+  if (isSearchOpen) {
+    return (
+      <Search
+        closeSearch={() => setIsSearchOpen(false)}
+        isSearchOpen={isSearchOpen}
+      />
+    );
+  }
 
   return (
     <nav
@@ -130,12 +140,45 @@ export const Nav: React.FC = memo(() => {
           </ul>
         </>
       ) : (
-        <>
+        <div className="navbar__right-side">
           {isVisible.includes(pathname) && (
-            <Search
-              key={pathname}
-            />
+            <div className="navbar__icon-link">
+              <NavIcon>
+                <ReactSVG
+                  src="img/icons/Search.svg"
+                  onClick={() => setIsSearchOpen(true)}
+                />
+              </NavIcon>
+            </div>
           )}
+
+          {pathname !== '/cart' && (
+            <NavLink
+              to="/favourites"
+              className={getIconLinkClass}
+            >
+              <NavIcon
+                itemsLength={favProducts.length}
+              >
+                <ReactSVG
+                  src="img/icons/Heart.svg"
+                />
+              </NavIcon>
+            </NavLink>
+          )}
+
+          <NavLink
+            to="/cart"
+            className={getIconLinkClass}
+          >
+            <NavIcon
+              itemsLength={cartItems.length}
+            >
+              <ReactSVG
+                src="img/icons/Shopping bag.svg"
+              />
+            </NavIcon>
+          </NavLink>
 
           <div className="navbar__icon-link">
             <NavIcon>
@@ -145,7 +188,7 @@ export const Nav: React.FC = memo(() => {
               />
             </NavIcon>
           </div>
-        </>
+        </div>
       )}
     </nav>
   );
