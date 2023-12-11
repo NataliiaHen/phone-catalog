@@ -76,7 +76,7 @@ export const Catalog: React.FC<Props> = memo(({ title }) => {
         ? (
           <div className="products__section">
             <p className="products__count">
-              {`${visibleItems.length} results`}
+              {`${filteredItems.length} results`}
             </p>
           </div>
         ) : (
