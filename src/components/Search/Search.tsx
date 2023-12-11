@@ -1,6 +1,6 @@
 import { debounce } from 'lodash';
 import React, {
-  useCallback, useRef, useState, memo,
+  useRef, useState, memo,
 } from 'react';
 import './Search.scss';
 import { useLocation, useSearchParams } from 'react-router-dom';
@@ -31,7 +31,7 @@ export const Search: React.FC = memo(() => {
     setSearchWith({ query: newQuery || null });
   };
 
-  const applyQuery = useCallback(debounce(handleAppliedChange, 1000), []);
+  const applyQuery = debounce(handleAppliedChange, 1000);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);

@@ -1,12 +1,11 @@
 /* eslint-disable */
-import './ProductPageContent.scss';
-import React, { useEffect, useState, memo, useCallback, useMemo, } from 'react';
+import './Catalog.scss';
+import React, { useEffect, useState, memo, } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import {
   getAccessories, getPhones, getProducts, getTablets,
 } from '../../api/products';
 import { Product } from '../../types/Product';
-import { SearchParams, getSearchWith } from '../../helpers/searchHelpers';
 import { Loader } from '../Loader';
 import { ProductsList } from '../ProductsList';
 import { Pagination } from '../Pagination';
@@ -19,13 +18,14 @@ import {
   getFilterProducts,
   filterQuery,
 } from './utils';
+import { Breadcrumbs } from '../Breadcrumbs';
 
 type Props = {
   title: string
 };
 
-export const ProductPageContent: React.FC<Props> = memo(({ title }) => {
-  const [searchParams, setSearchParams] = useSearchParams();
+export const Catalog: React.FC<Props> = memo(({ title }) => {
+  const [searchParams] = useSearchParams();
   const query = searchParams.get('query') || '';
   const currentPage = +(searchParams.get('page') || 1);
   const perPage = searchParams.get('perPage') || '16';
@@ -45,26 +45,6 @@ export const ProductPageContent: React.FC<Props> = memo(({ title }) => {
 
   const totalProducts = filteredItems.length;
   const totalPages = Math.ceil(totalProducts / +perPage);
-
-  const setSearchWith = (params: SearchParams) => {
-    const search = getSearchWith(searchParams, params);
-
-    setSearchParams(search);
-  }
-
-  const handlePerPageChange = useCallback((val: string) => {
-    setSearchWith({
-      page: '1',
-      perPage: val,
-    });
-  }, []);
-
-  const handleOptionChange = useCallback((val: string) => {
-    setSearchWith({
-      page: '1',
-      sort: val,
-    });
-  }, []);
 
   useEffect(() => {
     setIsLoading(true);
@@ -92,50 +72,63 @@ export const ProductPageContent: React.FC<Props> = memo(({ title }) => {
 
   return (
     <div className="products">
-      <section className="products__section">
-        <h1 className="products__title">
-          {title}
-        </h1>
-
-        <p className="products__count">
-          {products.length}
-        </p>
-      </section>
-
-      <section className="products__section products__section--small">
-        <div className="products__filters">
-
-          <div className="products__filter">
-            <p
-              className="products__filter-dropdown-label"
-            >
-              Sort by
+      {query
+        ? (
+          <div className="products__section">
+            <p className="products__count">
+              {`${products.length} results`}
             </p>
-
-            <Dropdown
-              options={sortOptions}
-              currentValue={sortType}
-              onChange={handleOptionChange}
-            />
           </div>
+        ) : (
+          <>
+            <section className="products__section">
+              <Breadcrumbs />
+              <h1 className="products__title">
+                {title}
+              </h1>
 
-          <div className="products__filter">
-            <label
-              className="products__filter-dropdown-label"
-              htmlFor="filter-dropdown"
-            >
-              Items on page
-            </label>
+              <p className="products__count">
+                {products.length}
+              </p>
+            </section>
 
-            <Dropdown
-              options={paginationOptions}
-              currentValue={perPage}
-              onChange={handlePerPageChange}
-              isSmall
-            />
-          </div>
-        </div>
-      </section>
+            <section className="products__section products__section--small">
+              <div className="products__filters">
+
+                <div className="products__filter">
+                  <p
+                    className="products__filter-dropdown-label"
+                  >
+                    Sort by
+                  </p>
+
+                  <Dropdown
+                    options={sortOptions}
+                    currentValue={sortType}
+                    type={"sort"}
+                  />
+                </div>
+
+                <div className="products__filter">
+                  <label
+                    className="products__filter-dropdown-label"
+                    htmlFor="filter-dropdown"
+                  >
+                    Items on page
+                  </label>
+
+                  <Dropdown
+                    options={paginationOptions}
+                    currentValue={perPage}
+                    type={"perPage"}
+                    isSmall
+                  />
+                </div>
+              </div>
+            </section>
+          </>
+        )}
+
 
       {filteredItems.length > 0 && !isLoading && (
         <section className="products__section">
@@ -164,7 +157,7 @@ export const ProductPageContent: React.FC<Props> = memo(({ title }) => {
         />
       )}
 
-      {products.length !== 0 && !filteredItems.length && (
+      {products.length !== 0 && !filteredItems.length && !isLoading && (
         <NoSearchResult
           query={query}
         />

@@ -1,5 +1,4 @@
 import './HomePage.scss';
-import React from 'react';
 import { ImageSlider } from '../../components/ImageSlider';
 import { ProductSlider } from '../../components/ProductSlider';
 import { FullPriceProvider } from '../../storage/fullPriceContext';

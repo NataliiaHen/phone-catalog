@@ -16,6 +16,8 @@
       object-position: center;
       object-fit: contain;
     }
+
+    @include scale;
   }
 
   &__current {

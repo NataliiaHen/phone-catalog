@@ -1,9 +1,9 @@
 import React, { memo } from 'react';
-import { ProductPageContent } from '../../components/ProductPageContent';
+import { Catalog } from '../../components/Catalog';
 
 export const PhonesPage: React.FC = memo(() => {
   return (
-    <ProductPageContent
+    <Catalog
       title="Mobile phones"
     />
   );

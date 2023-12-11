@@ -14,7 +14,7 @@ export const paginationOptions: DropDownOption[] = [
   { name: 'All', value: 'all' },
 ];
 
-const trimQuery = (query: string) => query.trim().toLowerCase();
+const trimString = (query: string) => query.trim().toLowerCase();
 
 export const getFilterProducts = (
   products: Product[],
@@ -53,12 +53,11 @@ export const getFilterProducts = (
 };
 
 export const filterQuery = (items: Product[], query: string) => {
-  const trimmedQuery = trimQuery(query);
+  const trimmedQuery = trimString(query);
 
-  if (trimmedQuery) {
-    return items.filter(prod => trimQuery(prod.name)
-      .includes(trimmedQuery));
-  }
-
-  return items;
+  return trimmedQuery
+    ? items.filter(prod => trimmedQuery
+      .split(' ')
+      .every(char => trimString(prod.name).includes(char)))
+    : items;
 };
