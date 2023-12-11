@@ -8,11 +8,11 @@ import { ReactSVG } from 'react-svg';
 import { SearchParams, getSearchWith } from '../../helpers/searchHelpers';
 
 type Props = {
-  closeSearch: () => void;
-  isSearchOpen: boolean;
+  closeSearch?: () => void;
+  isSearchOpen?: boolean;
 };
 
-export const Search: React.FC<Props> = memo(({ closeSearch, isSearchOpen }) => {
+export const Search: React.FC<Props> = memo(({ closeSearch, isSearchOpen = false }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchQuery = searchParams.get('query') || '';
 
@@ -54,7 +54,10 @@ export const Search: React.FC<Props> = memo(({ closeSearch, isSearchOpen }) => {
 
     setQuery('');
     applyQuery('');
-    closeSearch();
+
+    if (isSearchOpen && closeSearch) {
+      closeSearch();
+    }
   };
 
   return (
