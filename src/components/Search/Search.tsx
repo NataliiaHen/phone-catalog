@@ -33,7 +33,12 @@ export const Search: React.FC<Props> = memo(({ closeSearch, isSearchOpen = false
     newQuery: string,
   ) => {
     setAppliedQuery(newQuery);
-    setSearchWith({ query: newQuery || null });
+    setSearchWith({
+      query: newQuery || null,
+      page: null,
+      perPage: null,
+      sort: null,
+    });
   };
 
   const applyQuery = debounce(handleAppliedChange, 1000);
